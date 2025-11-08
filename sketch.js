@@ -20,12 +20,11 @@ let time = 0;
 let inputCooldown = 0;
 let lastKeyStates = {};
 let score = 0;
-let targetWaveFreq = 0;
 
 let targetWave = {
   baseRadius: 380,
   amplitude: 20,
-  frequency: targetWaveFreq,
+  frequency: 0,
   phase: 0,
   animationSpeed: 0.05,
   color: [255, 255, 255, 200],
@@ -42,8 +41,7 @@ let playerWave = {
 
 function setup() {
   createCanvas(screenWith, screenHeight);
-  targetWaveFreq = getRandomInt(10, 30);
-  targetWave.frequency = targetWaveFreq;
+  targetWave.frequency = getRandomInt(10, 30);
 }
 
 function draw() {
@@ -54,9 +52,9 @@ function draw() {
   handleContinuousInput();
 
   // Make target wave circle gradually smaller
-  if (targetWave.baseRadius > 50) {
+  if (targetWave.baseRadius > playerRadius) {
     targetWave.baseRadius -= 0.5; // Reduce base radius by 0.5 each frame
-    targetWave.baseRadius = max(playerRadius, targetWave.baseRadius); // Don't go below 50
+    targetWave.baseRadius = max(playerRadius, targetWave.baseRadius); // Don't go below playerRadius
   }
 
   drawWave(targetWave, time);
