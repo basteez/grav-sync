@@ -3,7 +3,18 @@ class Sprite {
     this.x = x;
     this.y = y;
     this.animation = animation;
-    this.w = this.animation[0].width;
+    if (
+      this.animation.length > 0 &&
+      this.animation[0] &&
+      typeof this.animation[0].width !== "undefined"
+    ) {
+      this.w = this.animation[0].width;
+    } else {
+      this.w = 0;
+      console.warn(
+        "Sprite: animation array is empty or first frame has no width property."
+      );
+    }
     this.len = this.animation.length;
     this.speed = speed;
     this.scale = scale;

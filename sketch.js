@@ -60,7 +60,7 @@ function setup() {
     animation.push(img);
   }
 
-  // Scale sprite to match earthRadius * 2 (diameter = 96px, sprite is 48px)
+  // Scale sprite to match earthRadius * 2 (target diameter = 96px, source sprite = 48px)
   let spriteScale = (earthRadius * 2) / 48;
   earth = new Sprite(animation, earthX, earthY, random(0.1, 0.4), spriteScale);
 }
@@ -127,6 +127,7 @@ function drawWave(wave, currentTime) {
     vertex(x, y);
   }
   endShape(CLOSE);
+  stroke("black");
 }
 
 function handleContinuousInput() {
