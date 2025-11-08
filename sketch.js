@@ -14,6 +14,8 @@ const earthRadius = 30;
 const initialAmplitude = 10;
 const initialFrequency = 0;
 
+const playerRadius = 80;
+
 let time = 0;
 let inputCooldown = 0;
 let lastKeyStates = {};
@@ -21,15 +23,15 @@ let score = 0;
 
 let targetWave = {
   baseRadius: 380,
-  amplitude: 15,
-  frequency: 10,
+  amplitude: 20,
+  frequency: 0,
   phase: 0,
   animationSpeed: 0.05,
   color: [255, 255, 255, 200],
 };
 
 let playerWave = {
-  baseRadius: 50,
+  baseRadius: playerRadius,
   amplitude: initialAmplitude,
   frequency: initialFrequency,
   phase: 0,
@@ -39,6 +41,7 @@ let playerWave = {
 
 function setup() {
   createCanvas(screenWith, screenHeight);
+  targetWave.frequency = getRandomInt(10, 30);
 }
 
 function draw() {
@@ -49,9 +52,9 @@ function draw() {
   handleContinuousInput();
 
   // Make target wave circle gradually smaller
-  if (targetWave.baseRadius > 50) {
+  if (targetWave.baseRadius > playerRadius) {
     targetWave.baseRadius -= 0.5; // Reduce base radius by 0.5 each frame
-    targetWave.baseRadius = max(50, targetWave.baseRadius); // Don't go below 50
+    targetWave.baseRadius = max(playerRadius, targetWave.baseRadius); // Don't go below playerRadius
   }
 
   drawWave(targetWave, time);
@@ -60,10 +63,11 @@ function draw() {
   let sync = calculateSync();
   displayUI(sync);
 
-  if (targetWave.baseRadius === playerWave.baseRadius) {
+  if (targetWave.baseRadius === playerRadius) {
     if (sync > 0.8) {
       score++;
     }
+    targetWave.frequency = getRandomInt(10, 30);
     targetWave.baseRadius = 380;
   }
 }
@@ -194,28 +198,41 @@ function displayUI(sync) {
 }
 
 function calculateSync() {
-  let totalDiff = 0;
   let samples = 36;
+  let totalNormDiff = 0;
   for (let i = 0; i < samples; i++) {
     let angle = (TWO_PI / samples) * i;
-    let targetOsc =
-      targetWave.amplitude *
-      sin(
-        targetWave.frequency * angle +
-          radians(targetWave.phase) +
-          time * targetWave.animationSpeed * 50
-      );
-    let playerOsc =
-      playerWave.amplitude *
-      sin(
-        playerWave.frequency * angle +
-          radians(playerWave.phase) +
-          time * playerWave.animationSpeed * 50
-      );
-    let maxDiff = targetWave.amplitude + playerWave.amplitude;
-    let diff = abs(targetOsc - playerOsc) / maxDiff;
-    totalDiff += diff;
+    // normalized oscillation (range -1..1), so amplitude doesn't affect this
+    let targetNorm = sin(
+      targetWave.frequency * angle +
+        radians(targetWave.phase) +
+        time * targetWave.animationSpeed * 50
+    );
+    let playerNorm = sin(
+      playerWave.frequency * angle +
+        radians(playerWave.phase) +
+        time * playerWave.animationSpeed * 50
+    );
+    // difference between normalized waves (0..2), divide by 2 to get 0..1
+    let normDiff = abs(targetNorm - playerNorm) / 2;
+    totalNormDiff += normDiff;
   }
-  let avgDiff = totalDiff / samples;
-  return max(0, 1 - avgDiff);
+  let avgNormDiff = totalNormDiff / samples;
+  let freqScore = max(0, 1 - avgNormDiff);
+
+  // amplitude similarity: compare amplitudes (0..maxAmplitude)
+  let maxAmpRange = maxAmplitude - minAmplitude;
+  // avoid division by zero
+  if (maxAmpRange <= 0) maxAmpRange = maxAmplitude || 1;
+  let ampDiff = abs(targetWave.amplitude - playerWave.amplitude) / maxAmpRange;
+  ampDiff = max(0, min(1, ampDiff));
+  let ampScore = 1 - ampDiff;
+
+  // combine scores with weights: frequency 80%, amplitude 20%
+  let combined = freqScore * 0.8 + ampScore * 0.2;
+  return max(0, min(1, combined));
+}
+
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
