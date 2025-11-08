@@ -9,7 +9,7 @@ const maxFrequency = 100;
 
 const earthX = screenWith / 2;
 const earthY = screenHeight / 2;
-const earthRadius = 30;
+const earthRadius = 48;
 
 const initialAmplitude = 10;
 const initialFrequency = 0;
@@ -39,9 +39,30 @@ let playerWave = {
   color: [100, 150, 255, 200],
 };
 
+let spritedata;
+let spritesheet;
+let animation = [];
+let earth;
+
+function preload() {
+  spritedata = loadJSON("animations/earth.json");
+  spritesheet = loadImage("sprites/earth.png");
+}
+
 function setup() {
   createCanvas(screenWith, screenHeight);
+  let frames = spritedata.frames;
+
   targetWave.frequency = getRandomInt(10, 30);
+  for (let i = 0; i < frames.length; i++) {
+    let pos = frames[i].position;
+    let img = spritesheet.get(pos.x, pos.y, pos.w, pos.h);
+    animation.push(img);
+  }
+
+  // Scale sprite to match earthRadius * 2 (target diameter = 96px, source sprite = 48px)
+  let spriteScale = (earthRadius * 2) / 48;
+  earth = new Sprite(animation, earthX, earthY, random(0.1, 0.4), spriteScale);
 }
 
 function draw() {
@@ -59,7 +80,8 @@ function draw() {
 
   drawWave(targetWave, time);
   drawWave(playerWave, time);
-  drawEarth();
+  earth.show();
+  earth.animate();
   let sync = calculateSync();
   displayUI(sync);
 
@@ -105,21 +127,7 @@ function drawWave(wave, currentTime) {
     vertex(x, y);
   }
   endShape(CLOSE);
-}
-
-function drawEarth() {
-  fill(0, 0, 0, 100);
-  noStroke();
-  circle(earthX + 3, earthY + 3, earthRadius * 2);
-  fill("#004488");
-  stroke("#0066BB");
-  strokeWeight(2);
-  circle(earthX, earthY, earthRadius * 2);
-  fill("#006600");
-  noStroke();
-  ellipse(earthX - 8, earthY - 3, 12, 8);
-  ellipse(earthX + 6, earthY + 6, 8, 6);
-  ellipse(earthX - 2, earthY + 8, 6, 4);
+  stroke("black");
 }
 
 function handleContinuousInput() {
