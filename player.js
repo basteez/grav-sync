@@ -1,7 +1,8 @@
+// Player class extending Wave with controllable parameters
 class Player extends Wave {
   constructor() {
     super(
-      CONFIG.playerWave.baseRadius,
+      CONFIG.playerRadius,
       CONFIG.initialAmplitude,
       CONFIG.initialFrequency,
       CONFIG.playerWave.phase,
@@ -10,25 +11,30 @@ class Player extends Wave {
     );
   }
 
+  // Reset player wave to initial state
   reset() {
     this.amplitude = CONFIG.initialAmplitude;
     this.frequency = CONFIG.initialFrequency;
     this.phase = 0;
   }
 
+  // Increase wave amplitude (with bounds checking)
   increaseAmplitude() {
-    this.amplitude = min(CONFIG.maxAmplitude, this.amplitude + 1);
+    this.amplitude = Math.min(CONFIG.maxAmplitude, this.amplitude + 1);
   }
 
+  // Decrease wave amplitude (with bounds checking)
   decreaseAmplitude() {
-    this.amplitude = max(CONFIG.minAmplitude, this.amplitude - 1);
+    this.amplitude = Math.max(CONFIG.minAmplitude, this.amplitude - 1);
   }
 
+  // Increase wave frequency (with bounds checking)
   increaseFrequency() {
-    this.frequency = min(CONFIG.maxFrequency, this.frequency + 1);
+    this.frequency = Math.min(CONFIG.maxFrequency, this.frequency + 1);
   }
 
+  // Decrease wave frequency (with bounds checking)
   decreaseFrequency() {
-    this.frequency = max(CONFIG.minFrequency, this.frequency - 1);
+    this.frequency = Math.max(CONFIG.minFrequency, this.frequency - 1);
   }
 }

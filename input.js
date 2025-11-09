@@ -1,3 +1,4 @@
+// Input handler for player controls
 class InputHandler {
   constructor(player) {
     this.player = player;
@@ -5,42 +6,42 @@ class InputHandler {
     this.lastKeyStates = {};
   }
 
+  // Handle continuous input with cooldown system
   handleContinuousInput() {
     this.inputCooldown++;
 
-    // Define key mappings
+    // Key mappings for wave control
     const keys = {
       w: {
-        pressed: keyIsDown(87) || keyIsDown(119),
+        pressed: keyIsDown(87) || keyIsDown(119), // W/w
         action: () => this.player.increaseAmplitude(),
       },
       s: {
-        pressed: keyIsDown(83) || keyIsDown(115),
+        pressed: keyIsDown(83) || keyIsDown(115), // S/s
         action: () => this.player.decreaseAmplitude(),
       },
       a: {
-        pressed: keyIsDown(65) || keyIsDown(97),
+        pressed: keyIsDown(65) || keyIsDown(97), // A/a
         action: () => this.player.decreaseFrequency(),
       },
       d: {
-        pressed: keyIsDown(68) || keyIsDown(100),
+        pressed: keyIsDown(68) || keyIsDown(100), // D/d
         action: () => this.player.increaseFrequency(),
       },
     };
 
     let anyJustPressed = false;
 
-    // Handle instant presses and continuous controls
-    for (let key in keys) {
-      const keyData = keys[key];
+    // Process each key
+    for (const [key, keyData] of Object.entries(keys)) {
       const justPressed = keyData.pressed && !this.lastKeyStates[key];
 
-      // Instant press (always works)
+      // Handle instant presses
       if (justPressed) {
         keyData.action();
         anyJustPressed = true;
       }
-      // Continuous press (only if timer expired and no instant press)
+      // Handle continuous presses (with cooldown)
       else if (
         this.inputCooldown >= CONFIG.inputCooldownMax &&
         keyData.pressed &&
@@ -49,16 +50,17 @@ class InputHandler {
         keyData.action();
       }
 
-      // Save current state
+      // Save current key state
       this.lastKeyStates[key] = keyData.pressed;
     }
 
-    // Reset timer if any action was performed
+    // Reset cooldown timer when action performed
     if (anyJustPressed || this.inputCooldown >= CONFIG.inputCooldownMax) {
       this.inputCooldown = 0;
     }
   }
 
+  // Handle single key presses
   handleKeyPressed() {
     if (key === " ") {
       this.player.reset();
