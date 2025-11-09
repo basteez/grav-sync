@@ -8,9 +8,11 @@ let animation = [];
 let earth;
 let game;
 let knobSpritedata;
-let knobAnimation = [];
 let redKnob;
 let blueKnob;
+let cockpit;
+let redKnobSpritesheet;
+let blueKnobSpritesheet;
 
 // Shader sources for background distortion effect
 const distortionVert = `
