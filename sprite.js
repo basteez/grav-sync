@@ -38,4 +38,9 @@ class Sprite {
   animate() {
     this.index += this.speed;
   }
+
+  // Advance animation by one frame (useful for manual control)
+  nextFrame() {
+    this.index = (this.index + 1) % this.len;
+  }
 }
