@@ -48,7 +48,7 @@ const CONFIG = (() => {
 
   // Derived values
   config.earthX = config.screenWidth / 2;
-  config.earthY = config.screenHeight / 2;
+  config.earthY = config.screenHeight / 2 - 80;
 
   return config;
 })();

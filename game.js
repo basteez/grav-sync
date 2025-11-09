@@ -113,7 +113,47 @@ class Game {
     earth.show();
     earth.animate();
 
+    // Draw cockpit with knobs
+    this.drawCockpit();
+
     UI.display(this.sync, this.score, this.player);
+  }
+
+  // Draw cockpit and knobs with relative positioning
+  drawCockpit() {
+    const cockpitX = -25;
+    const cockpitY = 280;
+
+    // Draw cockpit base
+    image(cockpit, cockpitX, cockpitY, 700, 306);
+
+    // Draw knobs with positions relative to cockpit
+    push();
+    translate(cockpitX, cockpitY);
+
+    // Red knob position (relative to cockpit)
+    const redKnobLocalX = 130;
+    const redKnobLocalY = 20;
+    image(
+      redKnob.animation[floor(redKnob.index) % redKnob.len],
+      redKnobLocalX,
+      redKnobLocalY,
+      redKnob.w * redKnob.scale,
+      redKnob.w * redKnob.scale
+    );
+
+    // Blue knob position (relative to cockpit)
+    const blueKnobLocalX = CONFIG.screenWidth - 165;
+    const blueKnobLocalY = 20;
+    image(
+      blueKnob.animation[floor(blueKnob.index) % blueKnob.len],
+      blueKnobLocalX,
+      blueKnobLocalY,
+      blueKnob.w * blueKnob.scale,
+      blueKnob.w * blueKnob.scale
+    );
+
+    pop();
   }
 
   // Handle key press events

@@ -14,19 +14,31 @@ class InputHandler {
     const keys = {
       w: {
         pressed: keyIsDown(87) || keyIsDown(119), // W/w
-        action: () => this.player.increaseAmplitude(),
+        action: () => {
+          this.player.increaseAmplitude();
+          blueKnob.nextFrame();
+        },
       },
       s: {
         pressed: keyIsDown(83) || keyIsDown(115), // S/s
-        action: () => this.player.decreaseAmplitude(),
+        action: () => {
+          this.player.decreaseAmplitude();
+          blueKnob.nextFrame();
+        },
       },
       a: {
         pressed: keyIsDown(65) || keyIsDown(97), // A/a
-        action: () => this.player.decreaseFrequency(),
+        action: () => {
+          this.player.decreaseFrequency();
+          redKnob.nextFrame();
+        },
       },
       d: {
         pressed: keyIsDown(68) || keyIsDown(100), // D/d
-        action: () => this.player.increaseFrequency(),
+        action: () => {
+          this.player.increaseFrequency();
+          redKnob.nextFrame();
+        },
       },
     };
 

@@ -7,6 +7,12 @@ let distortionBuffer;
 let animation = [];
 let earth;
 let game;
+let knobSpritedata;
+let redKnob;
+let blueKnob;
+let cockpit;
+let redKnobSpritesheet;
+let blueKnobSpritesheet;
 
 // Shader sources for background distortion effect
 const distortionVert = `
@@ -86,6 +92,10 @@ function preload() {
   spritedata = loadJSON("animations/earth.json");
   spritesheet = loadImage("sprites/earth.png");
   backgroundImg = loadImage("sprites/background.png");
+  cockpit = loadImage("sprites/cockpit.png");
+  redKnobSpritesheet = loadImage("sprites/red-knob.png");
+  blueKnobSpritesheet = loadImage("sprites/blue-knob.png");
+  knobSpritedata = loadJSON("animations/knob.json");
 }
 
 // Setup canvas and initialize game
@@ -119,6 +129,39 @@ function setup() {
     CONFIG.earthY,
     random(0.1, 0.4),
     spriteScale
+  );
+
+  // Load knob animation frames
+  const knobFrames = knobSpritedata.frames;
+  const redKnobFrames = [];
+  const blueKnobFrames = [];
+
+  for (let i = 0; i < knobFrames.length; i++) {
+    const pos = knobFrames[i].position;
+    const redImg = redKnobSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+    const blueImg = blueKnobSpritesheet.get(pos.x, pos.y, pos.w, pos.h);
+    redKnobFrames.push(redImg);
+    blueKnobFrames.push(blueImg);
+  }
+
+  // Create knob sprites at 1/4 and 3/4 of screen width
+  const knobScale = 1.5; // Scale up the knobs a bit
+  const knobY = CONFIG.screenHeight - 130; // Position near bottom
+
+  redKnob = new Sprite(
+    redKnobFrames,
+    150,
+    knobY,
+    0, // Speed 0 - only animate on input
+    knobScale
+  );
+
+  blueKnob = new Sprite(
+    blueKnobFrames,
+    CONFIG.screenWidth - 140,
+    knobY,
+    0, // Speed 0 - only animate on input
+    knobScale
   );
 
   game = new Game();
