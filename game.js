@@ -151,16 +151,7 @@ class Game {
       distortionShader.setUniform("u_distortionStrength", 0.3); // Very subtle
 
       // Render to buffer
-      distortionBuffer.quad(
-        -width / 2,
-        -height / 2,
-        width / 2,
-        -height / 2,
-        width / 2,
-        height / 2,
-        -width / 2,
-        height / 2
-      );
+      distortionBuffer.quad(-1, -1, 1, -1, 1, 1, -1, 1);
 
       // Apply the distorted background
       image(distortionBuffer, 0, 0);

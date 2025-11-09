@@ -3,6 +3,7 @@ let spritedata;
 let spritesheet;
 let backgroundImg;
 let distortionShader;
+let distortionBuffer;
 let animation = [];
 let earth;
 let game;
@@ -86,9 +87,6 @@ function preload() {
   spritesheet = loadImage("sprites/earth.png");
   backgroundImg = loadImage("sprites/background.png");
 }
-
-// WebGL buffer for shader effects
-let distortionBuffer;
 
 // Setup canvas and initialize game
 function setup() {

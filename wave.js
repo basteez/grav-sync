@@ -110,11 +110,12 @@ class Wave {
       // Draw star-like point
       fill(this.color[0], this.color[1], this.color[2], 180);
       noStroke();
+      rectMode(CENTER);
 
       // Small cross for star effect
       const size = 1.5;
-      rect(x - size / 2, y - 0.5, size, 1);
-      rect(x - 0.5, y - size / 2, 1, size);
+      rect(x, y, size, 1);
+      rect(x, y, 1, size);
     }
   }
 

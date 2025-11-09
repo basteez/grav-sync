@@ -106,16 +106,7 @@ class ExpandingWaveEffect {
       distortionShader.setUniform("u_waveFrequency", this.waveData.frequency);
       distortionShader.setUniform("u_distortionStrength", alpha * 2.0);
 
-      distortionBuffer.quad(
-        -width / 2,
-        -height / 2,
-        width / 2,
-        -height / 2,
-        width / 2,
-        height / 2,
-        -width / 2,
-        height / 2
-      );
+      distortionBuffer.quad(-1, -1, 1, -1, 1, 1, -1, 1);
     } catch (e) {
       console.error("Shader error:", e);
     }
