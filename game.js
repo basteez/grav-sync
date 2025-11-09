@@ -2,6 +2,7 @@ class Game {
   constructor() {
     this.time = 0;
     this.score = 0;
+    this.sync = 0;
     this.targetWave = new Wave(
       CONFIG.targetWave.baseRadius,
       CONFIG.targetWave.amplitude,
@@ -23,6 +24,9 @@ class Game {
     // Handle input
     this.inputHandler.handleContinuousInput();
 
+    // Calculate sync once per frame
+    this.sync = this.targetWave.calculateSync(this.player, this.time);
+
     // Make target wave circle gradually smaller
     if (this.targetWave.baseRadius > CONFIG.playerRadius) {
       this.targetWave.baseRadius -= CONFIG.targetRadiusDecrement;
@@ -34,8 +38,7 @@ class Game {
 
     // Check for level completion
     if (this.targetWave.baseRadius === CONFIG.playerRadius) {
-      let sync = this.targetWave.calculateSync(this.player, this.time);
-      if (sync > CONFIG.syncThreshold) {
+      if (this.sync > CONFIG.syncThreshold) {
         this.score++;
       }
       // Reset target wave
@@ -56,8 +59,7 @@ class Game {
     earth.show();
     earth.animate();
 
-    let sync = this.targetWave.calculateSync(this.player, this.time);
-    UI.display(sync, this.score, this.player);
+    UI.display(this.sync, this.score, this.player);
   }
 
   handleKeyPressed() {

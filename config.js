@@ -31,7 +31,7 @@ const CONFIG = (() => {
 
     // Player wave settings
     playerWave: {
-      baseRadius: 80,
+      baseRadius: 80, // Will be updated to use playerRadius
       phase: 0,
       animationSpeed: 0.05,
       color: [100, 150, 255, 200],
@@ -48,6 +48,7 @@ const CONFIG = (() => {
 
   config.earthX = config.screenWidth / 2;
   config.earthY = config.screenHeight / 2;
+  config.playerWave.baseRadius = config.playerRadius;
 
   return config;
 })();
