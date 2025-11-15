@@ -21,10 +21,14 @@ class Game {
 
     this.player = new Player();
     this.inputHandler = new InputHandler(this.player);
+
+    this.gameState = "start"; // New property to track game state
   }
 
   // Update game state each frame
   update() {
+    if (this.gameState === "start") return; // Skip updates in the start state
+
     this.time += CONFIG.timeIncrement;
 
     // Handle player input
@@ -70,7 +74,28 @@ class Game {
 
   // Render game elements
   draw() {
-    // Draw background
+    if (this.gameState === "start") {
+      // Draw background
+      if (backgroundImg) {
+        image(backgroundImg, 0, 0, width, height);
+      } else {
+        background(CONFIG.clearColor);
+      }
+
+      // Draw Earth and cockpit
+      earth.show();
+      earth.animate();
+      this.drawCockpit();
+
+      // Display start message
+      textAlign(CENTER, CENTER);
+      textSize(32);
+      fill(255);
+      text("Press SPACE to start", width / 2, height / 2);
+      return;
+    }
+
+    // Ensure background is drawn during gameplay
     if (backgroundImg) {
       image(backgroundImg, 0, 0, width, height);
     } else {
@@ -158,6 +183,11 @@ class Game {
 
   // Handle key press events
   handleKeyPressed() {
+    if (this.gameState === "start" && key === " ") {
+      this.gameState = "playing"; // Transition to playing state
+      return;
+    }
+
     this.inputHandler.handleKeyPressed();
   }
 

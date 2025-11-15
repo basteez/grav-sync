@@ -34,7 +34,7 @@ const CONFIG = (() => {
     playerWave: {
       phase: 0,
       animationSpeed: 0.05,
-      color: [100, 150, 255, 200],
+      color: [255, 150, 255, 200],
     },
 
     // Game settings
