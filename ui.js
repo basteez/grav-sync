@@ -4,16 +4,17 @@ class UI {
     // Display controls
     fill(255);
     textSize(14);
-    text("A (" + player.amplitude + ")", 495, 413);
+    textAlign(CENTER, BASELINE); // Center align horizontally, keep vertical baseline
+    text("A (" + player.amplitude + ")", width - 125, 413);
     text("F (" + player.frequency + ")", 125, 413);
     //text("SPACE: Reset", 10, 80);
 
     // Display sync status with color coding
     fill(sync > CONFIG.syncThreshold ? color(0, 255, 0) : color(255, 0, 0));
-    text("Sync: " + Math.round(sync * 100) + "%", 295, 360);
+    text("Sync: " + Math.round(sync * 100) + "%", width / 2, 360);
 
     // Display score
     fill("white");
-    text("Score: " + score, 295, 448);
+    text("Score: " + score, width / 2, 448);
   }
 }
