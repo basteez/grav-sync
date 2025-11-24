@@ -13,6 +13,8 @@ let blueKnob;
 let cockpit;
 let redKnobSpritesheet;
 let blueKnobSpritesheet;
+let music;
+let audioStarted = false;
 
 // Shader sources for background distortion effect
 const distortionVert = `
@@ -96,6 +98,7 @@ function preload() {
   redKnobSpritesheet = loadImage("sprites/red-knob.png");
   blueKnobSpritesheet = loadImage("sprites/blue-knob.png");
   knobSpritedata = loadJSON("animations/knob.json");
+  music = loadSound("music/space-journey.mp3");
 }
 
 // Setup canvas and initialize game
