@@ -100,7 +100,7 @@ function preload() {
   blueKnobSpritesheet = loadImage("sprites/blue-knob.png");
   knobSpritedata = loadJSON("animations/knob.json");
   music = loadSound("music/space-journey.mp3");
-  font = loadFont("/fonts/Minecraft.ttf");
+  font = loadFont("fonts/Minecraft.otf");
 }
 
 // Setup canvas and initialize game
