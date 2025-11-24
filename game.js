@@ -185,6 +185,12 @@ class Game {
   handleKeyPressed() {
     if (this.gameState === "start" && key === " ") {
       this.gameState = "playing"; // Transition to playing state
+
+      // Start music after user interaction to avoid AudioContext restrictions
+      if (!audioStarted && music) {
+        music.loop();
+        audioStarted = true;
+      }
       return;
     }
 
