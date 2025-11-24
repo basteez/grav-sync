@@ -15,6 +15,7 @@ let redKnobSpritesheet;
 let blueKnobSpritesheet;
 let music;
 let audioStarted = false;
+let font;
 
 // Shader sources for background distortion effect
 const distortionVert = `
@@ -99,13 +100,14 @@ function preload() {
   blueKnobSpritesheet = loadImage("sprites/blue-knob.png");
   knobSpritedata = loadJSON("animations/knob.json");
   music = loadSound("music/space-journey.mp3");
+  font = loadFont("/fonts/Minecraft.ttf");
 }
 
 // Setup canvas and initialize game
 function setup() {
   createCanvas(CONFIG.screenWidth, CONFIG.screenHeight); // 2D mode
   distortionBuffer = createGraphics(width, height, WEBGL); // Separate buffer for shader
-
+  textFont(font);
   try {
     distortionShader = distortionBuffer.createShader(
       distortionVert,

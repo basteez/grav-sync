@@ -5,7 +5,7 @@ class UI {
     fill(255);
     textSize(14);
     textAlign(RIGHT, BASELINE); // Right align for amplitude
-    text("A (" + player.amplitude + ")", width - 125, 413);
+    text("A (" + player.amplitude + ")", width - 105, 413);
     textAlign(LEFT, BASELINE); // Left align for frequency
     text("F (" + player.frequency + ")", 125, 413);
     //text("SPACE: Reset", 10, 80);
